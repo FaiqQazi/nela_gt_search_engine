@@ -31,7 +31,7 @@ def search():
         print(query)
         # Mock search logic (replace with your actual search function)
         results = thesearch(query)
-        print(results)
+        # print(results)
         return jsonify({'results': results})
 
     except Exception as e:

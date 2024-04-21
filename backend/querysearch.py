@@ -242,10 +242,10 @@ def search_inverted_indices_lite(query, inverted_index_directory):
     url_positions = {}
 
     for word in words:
-        # print("printing the word")
-        # print(word)
-        # input("Press Enter to continue...")
-        # print("proceded with word", word)
+        print("printing the word")
+        print(word)
+        input("Press Enter to continue...")
+        print("proceded with word", word)
         first_two_chars = word[:2].lower() if word else None
         barrel = get_barrel(first_two_chars)
 
@@ -253,10 +253,10 @@ def search_inverted_indices_lite(query, inverted_index_directory):
             inverted_index_path = os.path.join(inverted_index_directory, f'inverted_index_{barrel}.json')
             with open(inverted_index_path, 'r') as json_file:
                 inverted_index = json.load(json_file)
-                # print(barrel)
+                print(barrel)
                 if word in inverted_index:
                     word_info = inverted_index[word]
-                    # print(word)
+                    print(word)
                     print("now working on this word")
                     # input("Press Enter to continue...")
                     for entry in word_info:
@@ -304,23 +304,22 @@ def rank_and_print_urls(sorted_urls, url_positions_result):
 # input("Press Enter to continue...")
 def thesearch(query):
         
-    inverted_index_directory = r'E:\salmandsa\DSA_Project\inverted_index_directory'
+    inverted_index_directory = r'E:\salmandsa\invertedindexdirectory'
     common_urls = search_inverted_indices(query, inverted_index_directory)
     url_frequencies, url_positions = search_inverted_indices_lite(query, inverted_index_directory)
-    # print(common_urls)
-    # print("now giving the psoitions of all words in the query   ")
-    # for u in common_urls:
-        # print(u)
-        # print(url_positions[u])
-        # print("---------------------------------------------")
-    # input("Press Enter to continue...")
-    # print("frequencies")
-    # for u in common_urls:
-    #     print(u)
-    #     print(url_frequencies[u])
-    #     print("---------------------------------------------")
-    # cc=0
-    # url_positions=sorted_urls = {k: v for k, v in sorted(url_positions.items())}
+    print(common_urls)
+    print("now giving the psoitions of all words in the query   ")
+    for u in common_urls:
+        print(u)
+        print(url_positions[u])
+        print("---------------------------------------------")
+    print("frequencies")
+    for u in common_urls:
+        print(u)
+        print(url_frequencies[u])
+        print("---------------------------------------------")
+    cc=0
+    url_positions=sorted_urls = {k: v for k, v in sorted(url_positions.items())}
 
     transformed_positions = {}
 
@@ -337,12 +336,11 @@ def thesearch(query):
                 
                 # sorted_urls = {k: v for k, v in sorted(transformed_positions.items())}
 
-        # input("Press Enter to continue...")
     # Print the transformed_positions dictionary
-    # for u in common_urls:
-    #     print(u)
-    #     print(transformed_positions[u])
-    #     print("---------------------------------------------")
+    for u in common_urls:
+        print(u)
+        print(transformed_positions[u])
+        print("---------------------------------------------")
 
 
         #now that we have the transformed urls
@@ -360,9 +358,10 @@ def thesearch(query):
         sorted_positions[url] = all_positions
 
     # Print the sorted_positions dictionary
-    # for u in common_urls:
-    #     print(u)
-    #     print(sorted_positions[u])
+    input("Press Enter to continue...")
+    for u in common_urls:
+        print(u)
+        print(sorted_positions[u])
 
     url_positions_score = {}
 
@@ -383,54 +382,73 @@ def thesearch(query):
                 url_positions_score[url] = url_positions_score.get(url, 0) + 15
 
     # Print the url_positions_score dictionary
-    # for url, score in url_positions_score.items():
-    #     print(f"URL: {url}, Position Score: {score}")
-    #     print("---------------------------------------------")
-
+    input("Press Enter to continue...")
+    for url, score in url_positions_score.items():
+        print(f"URL: {url}, Position Score: {score}")
+        print("---------------------------------------------")
+    input("press enter to continue")
     url_scores={}
+    s=0
     for url in common_urls:
         # Combine the frequency score and position score for each URL
+        # if(s%300==0):
+        #     input("press enter to continue")
+        # print(url)
         frequency_score = url_frequencies[url]
+        # print(frequency_score)
         position_score = url_positions_score.get(url, 0)
+        # print(position_score)
         combined_score = frequency_score + position_score
+        # print(combined_score)
+        s+=1
+        # print("---------------------------------------------")
 
         # Store the combined score in the url_scores dictionary
         url_scores[url] = combined_score
 
     # Sort the url_scores dictionary based on the frequency score in descending order
+        m=0
     sorted_url_scores = dict(sorted(url_scores.items(), key=lambda item: item[1], reverse=True))
+    for url in sorted_url_scores:
+        if(m%300==0):
+            input("press enter to continue")
+        print(url)
+        print(sorted_url_scores[url])
+        m+=1
+        print("---------------------------------------------")
     sorted_urls = list(sorted_url_scores.keys())
 
     print("sorted results below")
     print(sorted_urls)
+    return sorted_urls
     # Print the sorted_url_scores dictionary
     # for url, score in sorted_url_scores.items():
     #     print(f"URL: {url}, Combined Score: {score}")
     #     print("---------------------------------------------")
 
     # return sorted_urls
-    sorted_url_metadata = []
-    metadata_file_path = r"E:\salmandsa\DSA_Project\metadata.json"
-    with open(metadata_file_path, "r", encoding="utf-8") as metadata_file:
-        metadata = json.load(metadata_file)
+    # sorted_url_metadata = []
+    # metadata_file_path = r"E:\salmandsa\DSA_Project\metadata.json"
+    # with open(metadata_file_path, "r", encoding="utf-8") as metadata_file:
+    #     metadata = json.load(metadata_file)
 
-    print("Metadata for sorted URLs:")
-    for url in sorted_urls:
-        # Get metadata for the current URL
-        url_metadata = get_metadata(url, metadata)
-        sorted_url_metadata.append(url_metadata)
-        # if url_metadata:
-        #     print(f"URL: {url}")
-        #     print(f"Title: {url_metadata['title']}")
-        #     print(f"Date: {url_metadata['date']}")
-        #     print(f"Author: {url_metadata['author']}")
-        #     print("---------------------------------------------")
-        # else:
-        #     print(f"No metadata found for URL: {url}")
-        #     print("---------------------------------------------")
+    # print("Metadata for sorted URLs:")
+    # for url in sorted_urls:
+    #     # Get metadata for the current URL
+    #     url_metadata = get_metadata(url, metadata)
+    #     sorted_url_metadata.append(url_metadata)
+    #     # if url_metadata:
+    #     #     print(f"URL: {url}")
+    #     #     print(f"Title: {url_metadata['title']}")
+    #     #     print(f"Date: {url_metadata['date']}")
+    #     #     print(f"Author: {url_metadata['author']}")
+    #     #     print("---------------------------------------------")
+    #     # else:
+    #     #     print(f"No metadata found for URL: {url}")
+    #     #     print("---------------------------------------------")
 
-    print(sorted_url_metadata)
-    return sorted_url_metadata
+    # print(sorted_url_metadata)
+    # return sorted_url_metadata
 
 # middle=thesearch("in the middle of the night")
 # print(middle)
@@ -463,11 +481,11 @@ def thesearch(query):
 # print("\n".join(result_urls))
 
 # Example usage
-# inverted_index_directory = r'E:\salmandsa\DSA_Project\inverted_index_directory'
-# query = r'nawaz sharif'
-# cleaned_query = clean_query(query)
-# result_urls = search_inverted_indices(cleaned_query, inverted_index_directory)
-# print("\n".join(result_urls))
+inverted_index_directory = r'E:\salmandsa\DSA_Project\inverted_index_directory'
+query = r'event in saudi arabia'
+cleaned_query = clean_query(query)
+result_urls = thesearch(cleaned_query)
+print("\n".join(result_urls))
 
 # now we are gonna rank these urls 
 
