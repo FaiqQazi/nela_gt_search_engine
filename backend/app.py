@@ -1,10 +1,11 @@
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 import os
-from querysearch import thesearch
+from query import thesearch
+from newtry import searchfinal
 app = Flask(__name__)
 CORS(app)
-cors = CORS(app, resources={r"/search": {"origins": "http://localhost:3000"}})
+cors = CORS(app, resources={r"/search": {"origins": ["http://localhost:3000", "http://localhost:3001"]}})
 @app.after_request
 def add_cors_headers(response):
     response.headers['Access-Control-Allow-Origin'] = 'http://localhost:3000'
@@ -28,16 +29,15 @@ def search():
     try:
         data = request.get_json()
         query = data.get('query', '')
-        print(query)
-        # Mock search logic (replace with your actual search function)
-        results = thesearch(query)
-        # print(results)
+        print("Getting the results")
+        results = searchfinal(query)
+        print("Got the results")
         return jsonify({'results': results})
-
     except Exception as e:
         return jsonify({'error': f'Error during search: {str(e)}'})
 
-# ... (rest of the code remains the same)
+if __name__ == '__main__':
+    app.run(debug=True)
 
 @app.route('/upload', methods=['POST'])
 def upload_file():

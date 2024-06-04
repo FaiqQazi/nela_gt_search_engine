@@ -358,7 +358,7 @@ def thesearch(query):
         sorted_positions[url] = all_positions
 
     # Print the sorted_positions dictionary
-    input("Press Enter to continue...")
+    # input("Press Enter to continue...")
     for u in common_urls:
         print(u)
         print(sorted_positions[u])

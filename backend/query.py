@@ -237,7 +237,7 @@ def search_inverted_indices_lite(query, inverted_index_directory):
     for word in words:
         print("printing the word")
         print(word)
-        input("Press Enter to continue...")
+        # input("Press Enter to continue...")
         print("proceded with word", word)
         first_two_chars = word[:2].lower() if word else None
         barrel = get_barrel(first_two_chars)
